@@ -9,6 +9,14 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.3.*"
+        "zendframework/zendframework": "2.2.*",
+        "zendframework/zftool": "dev-master",
+        "firephp/firephp-core": "dev-master",
+        "doctrine/orm": "2.4.0-beta2",
+        "doctrine/dbal": "2.4.0-beta2",
+        "doctrine/common": "2.4.0-rc2",
+        "doctrine/doctrine-orm-module": "0.7.*",
+        "zendframework/zend-developer-tools": "dev-master",
+        "webino/webino-image-thumb": "dev-master"
     }
 }
