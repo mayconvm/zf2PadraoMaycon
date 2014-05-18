@@ -6,3 +6,8 @@ README.txt
 demos/
 extras/documentation
 *.lock
+*.swp
+.buildpath
+.project
+.settings/
+*.old
