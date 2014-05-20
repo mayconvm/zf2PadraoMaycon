@@ -1,4 +1,4 @@
-ZendSkeletonApplication
+Padrão Zend Maycon
 =======================
 
 Introduction
