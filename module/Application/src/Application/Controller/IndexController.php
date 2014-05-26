@@ -22,12 +22,12 @@ class IndexController extends BaseController
 	 */
     public function indexAction()
     {
-    	$form = "";
-    	$valid;
+    	$form = new \Usuario\Form\Login();
+//     	$valid = new \Usuario\Form\Validate\Login();
     	if ($this->getRequest()->getPost()) {
     		$dados = $this->getRequest()->getPost();
     		
-			//validando o formulário
+// 			//validando o formulário
 			$authentication = new \Zend\Authentication\AuthenticationService();
 			$adapter = new \Usuario\Model\Auth\Adapter($this->getDoctrine());
 			$storage = new \Usuario\Model\Auth\Storage();
@@ -35,14 +35,14 @@ class IndexController extends BaseController
 			$authentication->setAdapter($adapter);
 			$authentication->setStorage($storage);
 			
-			$adapter->setCredential($credential);
-			$adapter->setIdentity($identity);
+// 			$adapter->setCredential($credential);
+// 			$adapter->setIdentity($identity);
 			
-			if($authentication->authenticate() != null) {
-				// Aqui o usuário já estará logado
-			} else {
-				$this->flashmessenger()->addMensage("Este usuário não está habilitado para logar no sistema.");
-			}
+// 			if($authentication->authenticate() != null) {
+// 				// Aqui o usuário já estará logado
+// 			} else {
+// 				$this->flashmessenger()->addMensage("Este usuário não está habilitado para logar no sistema.");
+// 			}
 			
     	}
     		
