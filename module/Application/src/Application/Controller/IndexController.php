@@ -24,27 +24,28 @@ class IndexController extends BaseController
     {
     	$form = new \Usuario\Form\Login();
 //     	$valid = new \Usuario\Form\Validate\Login();
-    	if ($this->getRequest()->getPost()) {
+    	$authentication = $this->getServiceLocator()->get('Authentication\Usuario');
+
+    	if ($this->getRequest()->isPost()) {
+    		// Captura dados de login
     		$dados = $this->getRequest()->getPost();
+    		$credential = $dados['login'];
+    		$identity = $dados['senha'];
     		
-// 			//validando o formulário
-			$authentication = new \Zend\Authentication\AuthenticationService();
-			$adapter = new \Usuario\Model\Auth\Adapter($this->getDoctrine());
-			$storage = new \Usuario\Model\Auth\Storage();
-			
-			$authentication->setAdapter($adapter);
-			$authentication->setStorage($storage);
-			
-// 			$adapter->setCredential($credential);
-// 			$adapter->setIdentity($identity);
-			
-// 			if($authentication->authenticate() != null) {
-// 				// Aqui o usuário já estará logado
-// 			} else {
-// 				$this->flashmessenger()->addMensage("Este usuário não está habilitado para logar no sistema.");
-// 			}
-			
+ 			//validando o formulário
+
+			//Realiza a autenticação 
+			$authentication->getAdapter()->setCredential($credential);
+			$authentication->getAdapter()->setIdentity($identity);
+			$authentication->authenticate();
+
     	}
+
+    	if($authentication->hasIdentity()) {
+			$this->redirect()->toRoute('usuario_index');
+		} else {
+			$this->flashmessenger()->addMessage("Este usuário não está habilitado para logar no sistema.");
+		}
     		
         return new ViewModel(array(
         	$form

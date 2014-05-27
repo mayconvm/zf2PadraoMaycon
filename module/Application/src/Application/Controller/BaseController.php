@@ -11,7 +11,7 @@ class BaseController extends AbstractActionController
 	 * Retorna a instancia do doctrine
 	 */
 	public function getDoctrine() {
-		return $this->getServiceLocator()->get("Doctriner\Orm\EntityManager");
+		return $this->getServiceLocator()->get("Doctrine\Orm\EntityManager");
 	}
 
 }

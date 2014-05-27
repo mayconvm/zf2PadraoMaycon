@@ -16,21 +16,26 @@ class Adapter extends AbstractAdapter implements AdapterInterface{
 	
 	public function authenticate() {
 		
-		$entity = $this->drive->findOneBy('Usuario\Entity\Usuario',array(
+		$entity = $this->drive->getRepository('Usuario\Entity\Usuario');
+
+		$valid = $entity->findOneBy(array(
 			'usuario' => $this->getCredential(),
-			'senha' => sha1($this->getIdentity()),
-			//'ativo' => 1
+			'senha' => md5($this->getIdentity()),
+			'ativo' => 1
 		));
 		
-		if ($entity != null) {
+		if ($valid != null) {
 			$this->isValid = \Zend\Authentication\Result::SUCCESS;
-			if ($entity->ativo) {
+			if ($valid->getAtivo()) {
 				$this->isValid = \Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID;
 			}
-			return $entity;
+
+			$this->setIdentity( $valid->getIdUsuario() );
+
+			return $this;
 		}
 		
-		return null;		
+		return $this;		
 	}
 	
 	public function isValid() {

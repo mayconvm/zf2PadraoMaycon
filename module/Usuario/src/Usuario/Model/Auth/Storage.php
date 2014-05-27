@@ -4,10 +4,10 @@ namespace Usuario\Model\Auth;
 
 use Zend\Authentication\Storage\Session;
 
-class Session implements StorageInterface{
+class Storage extends Session{
 	
 	public function __construct() {
-		$manager = new \Usuario\Model\Auth\Session\ManagerSession();
+		$manager = new \Zend\Session\SessionManager();
 		
 		parent::__construct(null, null, $manager);
 	}
