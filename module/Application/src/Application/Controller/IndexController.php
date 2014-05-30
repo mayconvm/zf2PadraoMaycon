@@ -14,41 +14,41 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends BaseController
 {
-	
-	/**
-	 * Action para executar o login
-	 * TODO deve ser o controller efetuar o login
-	 * @see \Zend\Mvc\Controller\AbstractActionController::indexAction()
-	 */
+    
+    /**
+     * Action para executar o login
+     * TODO deve ser o controller efetuar o login
+     * @see \Zend\Mvc\Controller\AbstractActionController::indexAction()
+     */
     public function indexAction()
     {
-    	$form = new \Usuario\Form\Login();
-//     	$valid = new \Usuario\Form\Validate\Login();
-    	$authentication = $this->getServiceLocator()->get('Authentication\Usuario');
+        $form = new \Usuario\Form\Login();
+        //$valid = new \Usuario\Form\Validate\Login();
+        $authentication = $this->getServiceLocator()->get('Authentication\Usuario');
 
-    	if ($this->getRequest()->isPost()) {
-    		// Captura dados de login
-    		$dados = $this->getRequest()->getPost();
-    		$credential = $dados['login'];
-    		$identity = $dados['senha'];
-    		
- 			//validando o formulário
+        if ($this->getRequest()->isPost()) {
+            // Captura dados de login
+            $dados = $this->getRequest()->getPost();
+            $credential = $dados['login'];
+            $identity = $dados['senha'];
+            
+            //validando o formulário
 
-			//Realiza a autenticação 
-			$authentication->getAdapter()->setCredential($credential);
-			$authentication->getAdapter()->setIdentity($identity);
-			$authentication->authenticate();
+            //Realiza a autenticação
+            $authentication->getAdapter()->setCredential($credential);
+            $authentication->getAdapter()->setIdentity($identity);
+            $authentication->authenticate();
 
-    	}
+        }
 
-    	if($authentication->hasIdentity()) {
-			$this->redirect()->toRoute('usuario_index');
-		} else {
-			$this->flashmessenger()->addMessage("Este usuário não está habilitado para logar no sistema.");
-		}
-    		
+        if ($authentication->hasIdentity()) {
+            $this->redirect()->toRoute('usuario_index');
+        } else {
+            $this->flashmessenger()->addMessage("Este usuário não está habilitado para logar no sistema.");
+        }
+            
         return new ViewModel(array(
-        	$form
+            $form
         ));
     }
 }
