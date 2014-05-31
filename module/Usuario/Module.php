@@ -76,8 +76,9 @@ class Module
     {
         $serviceManager = $event->getApplication()->getServiceManager();
         $event = new \Usuario\Model\Auth\Event();
+
         $event->setMvcEvent($event);
-        $event->setServiceManage($serviceManager);
+        $event->setServiceDoctrine($serviceManager->get("Doctrine\ORM\EntityManager"));
         $event->setAcl(new \Usuario\Model\Auth\AclUsuario());
 
         $event->preDispach();

@@ -13,6 +13,13 @@ class IndexController extends AbstractActionController
         return new ViewModel();
     }
 
+    public function sairAction()
+    {
+        $authentication = $this->getServiceLocator()->get("Authentication\Usuario");
+        $authentication->clearIdentity();
 
+        $this->redirect()->toRoute("home");
+
+        return $this->response;
+    }
 }
-

@@ -37,7 +37,4 @@ class LoginController extends AbstractActionController
     {
         return new ViewModel();
     }
-
-
 }
-

@@ -46,9 +46,11 @@ class IndexController extends BaseController
         } else {
             $this->flashmessenger()->addMessage("Este usuário não está habilitado para logar no sistema.");
         }
-            
-        return new ViewModel(array(
-            $form
-        ));
+
+        $view = new ViewModel();
+        $view->setTerminal(true);
+        // $view->setTemplate("layout/head.phtml");
+
+        return $view;
     }
 }

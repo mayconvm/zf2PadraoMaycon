@@ -7,9 +7,4 @@ use Zend\View\Model\ViewModel;
 
 class UsuarioApiController extends \Application\Controller\ApiController
 {
-
-   
-
-
 }
-

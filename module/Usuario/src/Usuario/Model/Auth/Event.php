@@ -6,7 +6,7 @@ class Event
 {
     
     private $event;
-    private $serviceManager;
+    private $serviceDoctrine;
     private $acl;
 
     /**
@@ -15,14 +15,21 @@ class Event
     **/
     public function preDispach()
     {
+        $controller = $this->getMvcEvent();
+        $action = $this->getMvcEvent();
+
+        // valida se existe algum usuário logado
+            // Caso usuário não tenha permissão deve verificar se o usuário
+            // visitante pode visualizar a pagina atual
+        // Valida se usuario tem permissão
     }
 
     /**
      * 
     **/
-    public function setServiceManage($sm)
+    public function setServiceDoctrine($sm)
     {
-        $this->serviceManager = $sm;
+        $this->ServiceDoctrine = $sm;
     }
 
     public function setMvcEvent($event)
@@ -35,14 +42,14 @@ class Event
         $this->acl = $acl;
     }
 
-    public function getServiceManager()
+    public function getServiceDoctrine()
     {
-        return $this->$serviceManager;
+        return $this->ServiceDoctrine;
     }
 
     public function getMvcEvent()
     {
-        return $this->$event;
+        return $this->event;
     }
 
     public function getAcl()
