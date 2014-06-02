@@ -67,6 +67,13 @@ class Module
                         $acl = new \Usuario\Model\Auth\AclUsuario($entityAcl);
 
                         return $acl;
+                    },
+                    'Usuario\Model' => function ($sm) {
+                        $usuarioModel = new \Usuario\Model\Usuario();
+                        $usuarioModel->setDoctrine($sm->get("Doctrine\ORM\EntityManager"));
+                        $usuarioModel->setEntity(new \Usuario\Entity\Usuario);
+
+                        return $usuarioModel;
                     }
                 )
             );
