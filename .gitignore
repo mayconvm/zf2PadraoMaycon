@@ -11,3 +11,4 @@ extras/documentation
 .project
 .settings/
 *.old
+*.*~

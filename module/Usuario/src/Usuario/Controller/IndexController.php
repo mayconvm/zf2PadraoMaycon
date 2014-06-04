@@ -12,11 +12,7 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $string = "<a href='{{usuario}}' class='{{email}}'>{{nome}}</a>";
-
-        preg_match_all("/{{[a-zA-Z]+}}/", $string, $saida, PREG_OFFSET_CAPTURE, 1);
-
-        print_r($saida);
+        print_r(get_class_methods($this->request));
 
         return new ViewModel();
     }

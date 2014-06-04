@@ -36,4 +36,20 @@ class Module
             ),
         );
     }
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'menuList' => function ($helpers) {
+                    $locator = $helpers->getServiceLocator();
+                    $viewHelperMenu = new \Application\View\Menu();
+                    $viewHelperMenu->setDoctrine($locator->get("Doctrine\ORM\EntityManager"));
+                    $viewHelperMenu->setAcl($locator->get("Usuario\Acl"));
+
+                    return $viewHelperMenu;
+                },
+            )
+        );
+    }
 }

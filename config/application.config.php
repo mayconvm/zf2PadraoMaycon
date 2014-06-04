@@ -9,8 +9,10 @@ return array(
     'modules' => array(
         'Application',
         'Usuario',
-    	'DoctrineModule',
-    	'DoctrineORMModule',
+        'DoctrineModule',
+        'DoctrineORMModule',
+        'Crud',
+        'Grupo'
         ),
     'module_listener_options' => array(
         'module_paths' => array(
