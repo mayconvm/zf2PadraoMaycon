@@ -64,6 +64,16 @@ class Usuario
      */
     private $senha;
 
+    /**
+     * @var \Usuario\Entity\Grupo
+     *
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Grupo")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idgrupo", referencedColumnName="idgrupo")
+     * })
+     */
+    private $idgrupo;
+
 
 
     /**
@@ -212,5 +222,28 @@ class Usuario
     public function getSenha()
     {
         return $this->senha;
+    }
+
+    /**
+     * Set idgrupo
+     *
+     * @param \Usuario\Entity\Grupo $idgrupo
+     * @return Usuario
+     */
+    public function setIdgrupo(\Usuario\Entity\Grupo $idgrupo = null)
+    {
+        $this->idgrupo = $idgrupo;
+
+        return $this;
+    }
+
+    /**
+     * Get idgrupo
+     *
+     * @return \Usuario\Entity\Grupo 
+     */
+    public function getIdgrupo()
+    {
+        return $this->idgrupo;
     }
 }

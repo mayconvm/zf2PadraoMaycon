@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acl")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Usuario\Entity\Repository\AclRepository")
  */
 class Acl
 {
@@ -22,14 +23,14 @@ class Acl
     private $idacl;
 
     /**
-     * @var \Usuario\Entity\AclRole
+     * @var \Usuario\Entity\AclPermission
      *
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\AclRole")
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\AclPermission")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idrole", referencedColumnName="idacl_role")
+     *   @ORM\JoinColumn(name="idpermission", referencedColumnName="idacl_permission")
      * })
      */
-    private $idrole;
+    private $idpermission;
 
     /**
      * @var \Usuario\Entity\AclPrivilege
@@ -42,14 +43,14 @@ class Acl
     private $idprivilege;
 
     /**
-     * @var \Usuario\Entity\AclPermission
+     * @var \Usuario\Entity\AclRole
      *
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\AclPermission")
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\AclRole")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idpermission", referencedColumnName="idacl_permission")
+     *   @ORM\JoinColumn(name="idrole", referencedColumnName="idacl_role")
      * })
      */
-    private $idpermission;
+    private $idrole;
 
 
 
@@ -64,26 +65,26 @@ class Acl
     }
 
     /**
-     * Set idrole
+     * Set idpermission
      *
-     * @param \Usuario\Entity\AclRole $idrole
+     * @param \Usuario\Entity\AclPermission $idpermission
      * @return Acl
      */
-    public function setIdrole(\Usuario\Entity\AclRole $idrole = null)
+    public function setIdpermission(\Usuario\Entity\AclPermission $idpermission = null)
     {
-        $this->idrole = $idrole;
+        $this->idpermission = $idpermission;
 
         return $this;
     }
 
     /**
-     * Get idrole
+     * Get idpermission
      *
-     * @return \Usuario\Entity\AclRole 
+     * @return \Usuario\Entity\AclPermission 
      */
-    public function getIdrole()
+    public function getIdpermission()
     {
-        return $this->idrole;
+        return $this->idpermission;
     }
 
     /**
@@ -110,25 +111,25 @@ class Acl
     }
 
     /**
-     * Set idpermission
+     * Set idrole
      *
-     * @param \Usuario\Entity\AclPermission $idpermission
+     * @param \Usuario\Entity\AclRole $idrole
      * @return Acl
      */
-    public function setIdpermission(\Usuario\Entity\AclPermission $idpermission = null)
+    public function setIdrole(\Usuario\Entity\AclRole $idrole = null)
     {
-        $this->idpermission = $idpermission;
+        $this->idrole = $idrole;
 
         return $this;
     }
 
     /**
-     * Get idpermission
+     * Get idrole
      *
-     * @return \Usuario\Entity\AclPermission 
+     * @return \Usuario\Entity\AclRole 
      */
-    public function getIdpermission()
+    public function getIdrole()
     {
-        return $this->idpermission;
+        return $this->idrole;
     }
 }
