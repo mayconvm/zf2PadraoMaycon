@@ -15,8 +15,18 @@ class Event
     **/
     public function preDispach()
     {
-        $controller = $this->getMvcEvent();
-        $action = $this->getMvcEvent();
+        $rota = $this->getMvcEvent()->getRouteMatch();
+        $usuario = $this->getAcl()->getUsuario();
+        $controller = $rota->getParam('controller');
+        $action = $rota->getParam('action');
+
+        if ($usuario instanceof \Usuario\Entity\Usuario) {
+            // if (!$this->getAcl()->isAllowed($usuario->getIdUsuario(), $controller, $action)) {
+            //     $this->redirect('/');
+            // }
+        }
+
+
 
         // valida se existe algum usuário logado
             // Caso usuário não tenha permissão deve verificar se o usuário
@@ -24,15 +34,21 @@ class Event
         // Valida se usuario tem permissão
     }
 
+    private function redirect($url)
+    {
+        $header = $this->getMvcEvent()->getHeaders();
+        $header->addHeaderLine("locate", $url);
+    }
+
     /**
      * 
     **/
-    public function setServiceDoctrine($sm)
+    public function setServiceDoctrine(\Doctrine\ORM\EntityManager $sm)
     {
         $this->ServiceDoctrine = $sm;
     }
 
-    public function setMvcEvent($event)
+    public function setMvcEvent(\Zend\Mvc\MvcEvent $event)
     {
         $this->event = $event;
     }

@@ -13,7 +13,9 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authenticationUsuario'), 11);
+        // Deve validar se o aplicativo está sendo chamado do terminal.
+        
+        // $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authenticationUsuario'), 11);
     }
 
     public function getConfig()
@@ -59,12 +61,10 @@ class Module
                         return $doctrine->find('Usuario\Entity\Usuario', $id);
                     },
                     'Usuario\Acl' => function ($sm) {
-                        $usuario = $sm->get("Usuario\Entity");
-                        $doctrine = $sm->get("Doctrine\ORM\EntityManager");
-                        $reposirotyAcl = $doctrine->getRepository("Usuario\Entity\Acl");
-                        $entityAcl = $reposirotyAcl->buscaPermissaoUsuario($usuario);
-
-                        $acl = new \Usuario\Model\Auth\AclUsuario($entityAcl);
+                        $acl = new \Usuario\Model\Auth\AclUsuario();
+                        $acl->setDoctrine($sm->get("Doctrine\ORM\EntityManager"));
+                        $acl->setUsuario($sm->get("Usuario\Entity"));
+                        $acl->execAcl();
 
                         return $acl;
                     },
@@ -79,14 +79,20 @@ class Module
             );
     }
 
-    public function authenticationUsuario(MvcEvent $event)
+    public function authenticationUsuario(MvcEvent $eventMVC)
     {
-        $serviceManager = $event->getApplication()->getServiceManager();
-        $event = new \Usuario\Model\Auth\Event();
+        $serviceManager = $eventMVC->getApplication()->getServiceManager();
+        $authentication = $serviceManager->get("Authentication\Usuario");
+        // Valida se o usuário está logado
+        if (!$authentication->hasIdentity()) {
+            // $eventMVC->getApplication()->redirect()->toRouter("home");
+            die("você não está logado.");
+        }
 
-        $event->setMvcEvent($event);
+        $event = new \Usuario\Model\Auth\Event();
+        $event->setMvcEvent($eventMVC);
         $event->setServiceDoctrine($serviceManager->get("Doctrine\ORM\EntityManager"));
-        $event->setAcl(new \Usuario\Model\Auth\AclUsuario());
+        $event->setAcl($serviceManager->get("Usuario\Acl"));
 
         $event->preDispach();
     }

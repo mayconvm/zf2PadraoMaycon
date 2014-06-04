@@ -13,16 +13,26 @@ class AclUsuario extends Acl
             'Privilege' => array(),
         );
 
-    public function __contruct (array $entityAcl)
-    {
-        // Adicionando roles, resources
-        foreach ($entityAcl as $key => $entity) {
-            $this->_addRole($entity->getIdRole());
-            $this->_addResource($entity->getIdPermission());
-            $this->_addPrivigele($entity->getIdPrivilege());
-        }
+    public static $entityName = "Usuario\Entity\Acl";
 
-        $this->execAcl();
+    public function setDoctrine(\Doctrine\ORM\EntityManager $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    public function setUsuario(\Usuario\Entity\Usuario $usuario)
+    {
+        $this->usuario = $usuario;
+    }
+
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    public function getDoctrine()
+    {
+        return $this->doctrine;
     }
 
     public function _addRole (array $roles)
@@ -56,12 +66,28 @@ class AclUsuario extends Acl
 
     public function execAcl ($removeAll = true)
     {
-        if ($removeAll) {
-            $this->removeResourceAll();
-            $this->removeRoleAll();
+        $reposirotyAcl = $this->getDoctrine()->getRepository(self::$entityName);
+        $usuario = $this->getUsuario();
+        $entityAcl = $reposirotyAcl->buscarPermissaoUsuario(
+            array(
+                    'idUsuario' => $usuario->getIdUsuario(),
+                    'idGrupo or' => $usuario->getIdGrupo()->getIdGrupo()
+            )
+        );
+
+        // Adicionando roles, resources
+        foreach ($entityAcl as $key => $entity) {
+            $this->_addRole($entity->getIdRole());
+            $this->_addResource($entity->getIdPermission());
+            $this->_addPrivigele($entity->getIdPrivilege());
         }
 
         $this->allow($acl['Role'], $acl['Resource'], $cl['Privilege']);
+
+
+        print_r($this->getRoleRegistry());
+
+        die;
 
         // foreach ($acl['Resource'] as $key => $resource) {
         //  foreach ($acl as $key2 => $role) {
