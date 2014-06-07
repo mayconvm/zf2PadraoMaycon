@@ -65,9 +65,9 @@ class Usuario
     private $senha;
 
     /**
-     * @var \Usuario\Entity\Grupo
+     * @var \Grupo\Entity\Grupo
      *
-     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Grupo")
+     * @ORM\ManyToOne(targetEntity="Grupo\Entity\Grupo")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idgrupo", referencedColumnName="idgrupo")
      * })
