@@ -92,4 +92,9 @@ class AclPrivilege
     {
         return $this->alias;
     }
+
+    public function toArray()
+    {
+        return (get_class_vars(get_class($this)));
+    }
 }

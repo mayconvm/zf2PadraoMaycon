@@ -9,6 +9,6 @@ class AclRepository extends EntityRepository
 
     public function buscarPermissaoUsuario($where)
     {
-        return $this->find($where);
+        return $this->findBy($where);
     }
 }

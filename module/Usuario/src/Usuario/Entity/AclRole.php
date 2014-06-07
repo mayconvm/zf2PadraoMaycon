@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acl_role")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Usuario\Entity\Repository\AclRoleRepository")
  */
 class AclRole
 {

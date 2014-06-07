@@ -23,6 +23,23 @@ class Acl
     private $idacl;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="idgrupo", type="integer", nullable=false)
+     */
+    private $idgrupo;
+
+    /**
+     * @var \Usuario\Entity\Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Usuario\Entity\Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idusuario", referencedColumnName="idusuario")
+     * })
+     */
+    private $idusuario;
+
+    /**
      * @var \Usuario\Entity\AclPermission
      *
      * @ORM\ManyToOne(targetEntity="Usuario\Entity\AclPermission")
@@ -62,6 +79,52 @@ class Acl
     public function getIdacl()
     {
         return $this->idacl;
+    }
+
+    /**
+     * Set idgrupo
+     *
+     * @param integer $idgrupo
+     * @return Acl
+     */
+    public function setIdgrupo($idgrupo)
+    {
+        $this->idgrupo = $idgrupo;
+
+        return $this;
+    }
+
+    /**
+     * Get idgrupo
+     *
+     * @return integer 
+     */
+    public function getIdgrupo()
+    {
+        return $this->idgrupo;
+    }
+
+    /**
+     * Set idusuario
+     *
+     * @param \Usuario\Entity\Usuario $idusuario
+     * @return Acl
+     */
+    public function setIdusuario(\Usuario\Entity\Usuario $idusuario = null)
+    {
+        $this->idusuario = $idusuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idusuario
+     *
+     * @return \Usuario\Entity\Usuario 
+     */
+    public function getIdusuario()
+    {
+        return $this->idusuario;
     }
 
     /**
