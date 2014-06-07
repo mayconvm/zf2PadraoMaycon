@@ -15,7 +15,7 @@ class Module
 
         // Deve validar se o aplicativo está sendo chamado do terminal.
         
-        // $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authenticationUsuario'), 11);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authenticationUsuario'), 11);
     }
 
     public function getConfig()
@@ -54,10 +54,6 @@ class Module
 
                         $id = $authentication->getIdentity();
 
-                        if (!$authentication->hasIdentity()) {
-                            return new StdClass();
-                        }
-
                         return $doctrine->find('Usuario\Entity\Usuario', $id);
                     },
                     'Usuario\Acl' => function ($sm) {
@@ -83,10 +79,14 @@ class Module
     {
         $serviceManager = $eventMVC->getApplication()->getServiceManager();
         $authentication = $serviceManager->get("Authentication\Usuario");
+        $rota = $eventMVC->getRouteMatch();
+
         // Valida se o usuário está logado
         if (!$authentication->hasIdentity()) {
-            // $eventMVC->getApplication()->redirect()->toRouter("home");
-            die("você não está logado.");
+            if ($rota->getParam("controller") != "Application\Controller\Index") {
+                $eventMVC->getApplication()->redirect()->toRouter("home");
+            }
+            return;
         }
 
         $event = new \Usuario\Model\Auth\Event();

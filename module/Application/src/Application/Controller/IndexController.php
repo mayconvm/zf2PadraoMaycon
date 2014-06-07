@@ -23,14 +23,23 @@ class IndexController extends BaseController
     public function indexAction()
     {
         $form = new \Usuario\Form\Login();
-        //$valid = new \Usuario\Form\Validate\Login();
+        
         $authentication = $this->getServiceLocator()->get('Authentication\Usuario');
+        $request = $this->getRequest();
 
-        if ($this->getRequest()->isPost()) {
+        if ($request->isPost()) {
+
+            $formValidator = new \Usuario\Form\Validator\LoginValidator();
+            {
+                $form->setInputFilter($formValidator->getInputFilter());
+                $form->setData($request->getPost());
+            }
+
             // Captura dados de login
-            $dados = $this->getRequest()->getPost();
+            $dados = $request->getPost();
             $credential = $dados['login'];
             $identity = $dados['senha'];
+
             
             //validando o formulário
 

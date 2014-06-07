@@ -12,3 +12,4 @@ extras/documentation
 .settings/
 *.old
 *.*~
+data/*
