@@ -16,6 +16,7 @@ class Menu extends AbstractHelper
                 'closeItem' => '</a></li>',
                 'closeList' => '</ul>'
             );
+    public static $entityName = "Application\Entity\Menu";
 
     public function setAcl(\Usuario\Model\Auth\AclUsuario $acl)
     {
@@ -34,7 +35,7 @@ class Menu extends AbstractHelper
 
     public function getAcl()
     {
-        $this->acl;
+        return $this->acl;
     }
 
     public function setTemplate(array $tpl)
@@ -49,22 +50,25 @@ class Menu extends AbstractHelper
         if (empty($acl)) {
             return;
         }
-            // Filtros para menu
+
+        // Filtros para menu
         $listPrivilege = array();
-        foreach ($acl->getIdPrivilege() as $key => $acl) {
-            $listPrivilege[] = $acl->getIdPrivilege();
+        foreach ($acl->getPrivilege() as $key => $item) {
+            $listPrivilege[] = $item->getIdaclPrivilege();
         }
 
         // renderiza o layout
         $saida = $this->tpl['openList'];
 
-        $repository = $this->getDoctrine()->buscarMenus(
+        $repositoryMenu = $this->getDoctrine()->getRepository(self::$entityName);
+
+        $listMenu = $repositoryMenu->buscarMenus(
             array(
                 'idprivilege' => $listPrivilege
             )
         );
 
-        foreach ($repository as $key => $entity) {
+        foreach ($listMenu as $key => $entity) {
             $saida .= $this->_render($entity);
         }
 

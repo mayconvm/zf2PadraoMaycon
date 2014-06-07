@@ -17,6 +17,8 @@ class AclUsuario extends Acl
 
     public static $entityName = "Usuario\Entity\Acl";
     public static $entityNameRole = 'Usuario\Entity\AclRole';
+    public static $entityNameResource = 'Usuario\Entity\AclResource';
+    public static $entityNamePrivilege = 'Usuario\Entity\AclPrivilege';
 
     public function setDoctrine(\Doctrine\ORM\EntityManager $doctrine)
     {
@@ -38,6 +40,26 @@ class AclUsuario extends Acl
         return $this->doctrine;
     }
 
+    public function getRole()
+    {
+        return $this->acl['Role'];
+    }
+
+    public function getResource()
+    {
+        return $this->acl['Resource'];
+    }
+
+    public function getPrivilege()
+    {
+        $repositoryPrivilege = $this->getDoctrine()->getRepository(self::$entityNamePrivilege);
+        return $repositoryPrivilege->buscarPermissao(
+            array(
+                'alias' => $this->acl['Privilege']
+            )
+        );
+    }
+
     public function _addRole (\Usuario\Entity\AclRole $roles)
     {
         if (!$this->hasRole($roles->getAlias())) {
@@ -57,11 +79,11 @@ class AclUsuario extends Acl
     public function _addPrivigele (\Usuario\Entity\AclPrivilege $privilege)
     {
         if (!array_search($privilege->getAlias(), $this->acl)) {
-            $this->acl['Privilege'][] = $privilege->toArray();
+            $this->acl['Privilege'][] = $privilege->getAlias();
         }
     }
 
-    public function getRole()
+    public function getRoleUsuario()
     {
         $repositoryRole = $this->getDoctrine()->getRepository(self::$entityNameRole);
         $role = $repositoryRole->buscarRole(
@@ -75,11 +97,10 @@ class AclUsuario extends Acl
 
     public function execAcl ($removeAll = true)
     {
-        $reposirotyAcl = $this->getDoctrine()->getRepository(self::$entityName);
         $usuario = $this->getUsuario();
 
         // Valida se existe Role
-        $role = $this->getRole();
+        $role = $this->getRoleUsuario();
         if (is_null($role)) {
             die("Usuário sem ROLE");
         }
@@ -93,6 +114,7 @@ class AclUsuario extends Acl
             // $where['idgrupo or'] = $idGrupo->getIdGrupo();
         }
 
+        $reposirotyAcl = $this->getDoctrine()->getRepository(self::$entityName);
         $entityAcl = $reposirotyAcl->buscarPermissaoUsuario($where);
         
         // Adicionando roles, resources
@@ -103,11 +125,6 @@ class AclUsuario extends Acl
         }
 
         $this->allow($this->acl['Role'], $this->acl['Resource'], $this->acl['Privilege']);
-
-
-        // print_r($this->getRoleRegistry());
-
-        die;
 
         // foreach ($acl['Resource'] as $key => $resource) {
         //  foreach ($acl as $key2 => $role) {

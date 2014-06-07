@@ -4,7 +4,7 @@ namespace Application\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class Menu extends EntityRepository
+class MenuRepository extends EntityRepository
 {
 
     public function buscarMenus($dados)

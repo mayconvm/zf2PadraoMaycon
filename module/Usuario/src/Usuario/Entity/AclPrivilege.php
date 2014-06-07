@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="acl_privilege")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Usuario\Entity\Repository\AclPrivilegeRepository")
  */
 class AclPrivilege
 {

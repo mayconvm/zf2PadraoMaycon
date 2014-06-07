@@ -12,8 +12,6 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        print_r(get_class_methods($this->request));
-
         return new ViewModel();
     }
 
@@ -70,10 +68,10 @@ class IndexController extends AbstractActionController
     public function sairAction()
     {
         $authentication = $this->getServiceLocator()->get("Authentication\Usuario");
-                $authentication->clearIdentity();
+        $authentication->clearIdentity();
 
-                $this->redirect()->toRoute("home");
+        $this->redirect()->toRoute("home");
 
-                return $this->response;
+        return $this->response;
     }
 }

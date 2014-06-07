@@ -46,7 +46,7 @@ class Module
                     $viewHelperMenu = new \Application\View\Menu();
                     $viewHelperMenu->setDoctrine($locator->get("Doctrine\ORM\EntityManager"));
                     $viewHelperMenu->setAcl($locator->get("Usuario\Acl"));
-
+                    
                     return $viewHelperMenu;
                 },
             )
