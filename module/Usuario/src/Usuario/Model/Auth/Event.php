@@ -24,6 +24,8 @@ class Event
             // if (!$this->getAcl()->isAllowed($usuario->getIdUsuario(), $controller, $action)) {
             //     $this->redirect('/');
             // }
+        } else {
+            // if()
         }
 
 

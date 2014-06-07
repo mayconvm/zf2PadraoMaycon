@@ -3,6 +3,8 @@
 namespace Usuario\Model\Auth;
 
 use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Role\GenericRole as Role;
+use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
 class AclUsuario extends Acl
 {
@@ -14,6 +16,7 @@ class AclUsuario extends Acl
         );
 
     public static $entityName = "Usuario\Entity\Acl";
+    public static $entityNameRole = 'Usuario\Entity\AclRole';
 
     public function setDoctrine(\Doctrine\ORM\EntityManager $doctrine)
     {
@@ -35,46 +38,63 @@ class AclUsuario extends Acl
         return $this->doctrine;
     }
 
-    public function _addRole (array $roles)
+    public function _addRole (\Usuario\Entity\AclRole $roles)
     {
-        foreach ($roles as $key => $entity) {
-            if (!$this->hasRole($entity->getAlias())) {
-                $this->addRole($entity->getAlias());
-                $this->acl['Role'][] = $entity->getAlias();
-            }
+        if (!$this->hasRole($roles->getAlias())) {
+            $this->addRole($roles->getAlias());
+            $this->acl['Role'][] = new Role($roles->getAlias());
         }
     }
 
-    public function _addResource (array $permissions)
+    public function _addResource (\Usuario\Entity\AclPermission $permissions)
     {
-        foreach ($permissions as $key => $entity) {
-            if ($this->hasResource($entity->getAlias())) {
-                $this->addResource($entity->getAlias());
-                $this->acl['Resource'][] = $entity->getAlias();
-            }
+        if ($this->hasResource($permissions->getAlias())) {
+            $this->addResource($permissions->getAlias());
+            $this->acl['Resource'][] = new Resource($permissions->getAlias());
         }
     }
 
-    public function _addPrivigele (array $privilege)
+    public function _addPrivigele (\Usuario\Entity\AclPrivilege $privilege)
     {
-        foreach ($privilege as $key => $entity) {
-            if (!array_search($entity->getAlias(), $this->acl)) {
-                $this->acl['Privilege'][] = $entity;
-            }
+        if (!array_search($privilege->getAlias(), $this->acl)) {
+            $this->acl['Privilege'][] = $privilege->toArray();
         }
+    }
+
+    public function getRole()
+    {
+        $repositoryRole = $this->getDoctrine()->getRepository(self::$entityNameRole);
+        $role = $repositoryRole->buscarRole(
+            array(
+                    'idusuario' => $this->getUsuario()->getIdUsuario()
+                )
+        );
+
+        return $role;
     }
 
     public function execAcl ($removeAll = true)
     {
         $reposirotyAcl = $this->getDoctrine()->getRepository(self::$entityName);
         $usuario = $this->getUsuario();
-        $entityAcl = $reposirotyAcl->buscarPermissaoUsuario(
-            array(
-                    'idUsuario' => $usuario->getIdUsuario(),
-                    'idGrupo or' => $usuario->getIdGrupo()->getIdGrupo()
-            )
+
+        // Valida se existe Role
+        $role = $this->getRole();
+        if (is_null($role)) {
+            die("Usuário sem ROLE");
+        }
+
+        $where = array(
+            'idrole' => $role->getIdaclRole()
         );
 
+        $idGrupo = $usuario->getIdGrupo();
+        if (!is_null($idGrupo)) {
+            // $where['idgrupo or'] = $idGrupo->getIdGrupo();
+        }
+
+        $entityAcl = $reposirotyAcl->buscarPermissaoUsuario($where);
+        
         // Adicionando roles, resources
         foreach ($entityAcl as $key => $entity) {
             $this->_addRole($entity->getIdRole());
@@ -82,10 +102,10 @@ class AclUsuario extends Acl
             $this->_addPrivigele($entity->getIdPrivilege());
         }
 
-        $this->allow($acl['Role'], $acl['Resource'], $cl['Privilege']);
+        $this->allow($this->acl['Role'], $this->acl['Resource'], $this->acl['Privilege']);
 
 
-        print_r($this->getRoleRegistry());
+        // print_r($this->getRoleRegistry());
 
         die;
 
