@@ -9,13 +9,26 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventShare   = $eventManager->getSharedManager();
 
-        // Deve validar se o aplicativo está sendo chamado do terminal.
-        
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'authenticationUsuario'), 11);
+        //Caso a requisição seja feita por ajax
+        $eventShare->attach(
+            'Zend\Mvc\Controller\AbstractActionController',
+            'dispatch',
+            function ($e) {
+                $result = $e->getResult();
+                if ($result instanceof \Zend\View\Model\ViewModel) {
+                    // $result->setTerminal($e->getRequest()->isXmlHttpRequest());
+
+                    // Valida se o usuário está logado
+                    $this->userLogado($e);
+                }
+
+            }
+        );
+
+        // $eventManager->attach(MvcEvent::EVENT_DISPATCH, array($this, 'userLogado'), 11);
     }
 
     public function getConfig()
@@ -75,20 +88,32 @@ class Module
             );
     }
 
-    public function authenticationUsuario(MvcEvent $eventMVC)
+    public function userLogado(MvcEvent $eventMVC)
     {
         $serviceManager = $eventMVC->getApplication()->getServiceManager();
         $authentication = $serviceManager->get("Authentication\Usuario");
         $rota = $eventMVC->getRouteMatch();
 
         // Valida se o usuário está logado
+        // Valida se ele está na pagina de login
         if (!$authentication->hasIdentity()) {
             if ($rota->getParam("controller") != "Application\Controller\Index") {
-                $eventMVC->getApplication()->redirect()->toRouter("home");
+                $url = $eventMVC->getRouter()->assemble(array(), array('name' => 'home'));
+                $response = $eventMVC->getResponse();
+                $response->getHeaders()->addHeaderLine('Location', $url);
+                $response->setStatusCode(302);
+                $response->sendHeaders();
             }
             return;
         }
 
+        $this->validaPermissionUser($eventMVC);
+    }
+
+    public function validaPermissionUser(MvcEvent $eventMVC)
+    {
+        $serviceManager = $eventMVC->getApplication()->getServiceManager();
+        
         $event = new \Usuario\Model\Auth\Event();
         $event->setMvcEvent($eventMVC);
         $event->setServiceDoctrine($serviceManager->get("Doctrine\ORM\EntityManager"));

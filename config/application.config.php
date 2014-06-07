@@ -12,7 +12,8 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'Crud',
-        'Grupo'
+        'Grupo',
+        'ACL',
         ),
     'module_listener_options' => array(
         'module_paths' => array(

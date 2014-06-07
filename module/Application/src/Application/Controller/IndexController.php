@@ -47,7 +47,6 @@ class IndexController extends BaseController
             $authentication->getAdapter()->setCredential($credential);
             $authentication->getAdapter()->setIdentity($identity);
             $authentication->authenticate();
-
         }
 
         if ($authentication->hasIdentity()) {
@@ -56,9 +55,13 @@ class IndexController extends BaseController
             $this->flashmessenger()->addMessage("Este usuário não está habilitado para logar no sistema.");
         }
 
-        $view = new ViewModel();
+        $view = new ViewModel(
+            array(
+                'form' => $form
+                )
+        );
+
         $view->setTerminal(true);
-        // $view->setTemplate("layout/head.phtml");
 
         return $view;
     }

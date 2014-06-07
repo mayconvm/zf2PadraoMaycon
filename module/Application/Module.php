@@ -16,9 +16,19 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
+        $eventManager = $e->getApplication()->getEventManager();
+        $eventShare   = $eventManager->getSharedManager();
+        $eventShare->attach(
+            'Zend\Mvc\Controller\AbstractActionController',
+            'dispatch',
+            function ($e) {
+                $result = $e->getResult();
+                if ($result instanceof \Zend\View\Model\ViewModel) {
+                    // $result->setTerminal($e->getRequest()->isXmlHttpRequest());
+                }
+
+            }
+        ); //Caso a requisição seja feita por ajax
     }
 
     public function getConfig()
