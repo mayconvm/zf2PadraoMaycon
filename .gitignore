@@ -13,3 +13,4 @@ extras/documentation
 *.old
 *.*~
 data/*
+public/js/bower_components/*
