@@ -1,0 +1,8 @@
+{ 
+	"name" : "PadraoMayconZF2",
+ 	"version" : "1.0.0",
+ 	"dependencies" : {
+		"bower" : "*"
+	},
+	"bin": "./npm_package"
+}

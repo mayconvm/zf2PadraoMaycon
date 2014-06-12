@@ -1,0 +1,29 @@
+{
+  "name": "padrao_zf2",
+  "version": "1.0.0",
+  "homepage": "https://github.com/mayconvm/zf2PadraoMaycon",
+  "authors": [
+    "Maycon Vinicius Moreira <mayconvm@gmail.com>"
+  ],
+  "description": "Projeto padrão ZF2",
+  "keywords": [
+    "Zend",
+    "ZF2",
+    "PHP"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "*",
+    "async": "*",
+    "bootstrap": "*",
+    "requirejs": "*",
+    "angularjs": "*"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
