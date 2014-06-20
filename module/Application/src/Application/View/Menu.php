@@ -11,8 +11,8 @@ class Menu extends AbstractHelper
     private $doctrine;
     private $tpl = array(
                 'openList' => '<lu class="nav nav-sidebar">',
-                'openItem' => '<li><a href="{{ItemLink}}" titile="{{Itemtext}}">{{Itemtext}}',
-                'itemActive' => '<li class="active"><a href="{{ItemLink}}" titile="{{Itemtext}}">{{Itemtext}}',
+                'openItem' => '<li><a href="{{itemLink}}" titile="Acessar {{itemText}}">{{itemText}}',
+                'itemActive' => '<li class="active"><a href="{{itemLink}}" titile="Acessar {{itemText}}">{{itemText}}',
                 'closeItem' => '</a></li>',
                 'closeList' => '</ul>'
             );
@@ -78,20 +78,34 @@ class Menu extends AbstractHelper
 
     private function _render(\Application\Entity\Menu $item)
     {
-        $htmlReturn = $this->tpl['openList'];
-        preg_match_all("/{{[a-zA-Z]+}}/", $htmlReturn, $listaAlias);
+        $htmlReturn = $this->tpl['openItem'];
+        $text = "/{{itemText}}/";
+        $link = "/{{itemLink}}/";
 
-        if (!empty($listaAlias)) {
-            $filterCamelCase = new UnderscoreToCamelCase();
+        $replaceText = $item->getMenu();
+        $replaceLink = $this->_url(
+            array(
+                    'route'  => $item->getLink(),
+                    'option' => $item->getOptions()
+            )
+        );
 
-            foreach ($listaAlias[0] as $key => $alias) {
-                $method = $filterCamelCase->filter("get".$alias);
-                if (method_exists($item, $method)) {
-                    $htmlReturn = str_replace($alias, $this->{$method}(), $htmlReturn);
-                }
-            }
+        $htmlReturn = preg_replace($text, $replaceText, $htmlReturn);
+        $htmlReturn = preg_replace($link, $replaceLink, $htmlReturn);
+
+        return $htmlReturn . $this->tpl['closeItem'];
+    }
+
+    private function _url(array $dados)
+    {
+        $link = $dados['route'];
+        $option = $dados['option']? json_decode($dados['option'], true) : array();
+        $helper = $this->getView();
+
+        if (empty($link)) {
+            return '#';
         }
 
-        return $htmlReturn;
+        return $helper->url($link, $option);
     }
 }

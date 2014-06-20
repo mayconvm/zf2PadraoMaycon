@@ -50,6 +50,20 @@ class Menu
      */
     private $idsubmenu;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="link", type="string", length=255, nullable=true)
+     */
+    private $link;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="options", type="text", nullable=true)
+     */
+    private $options;
+
 
 
     /**
@@ -152,5 +166,61 @@ class Menu
     public function getIdsubmenu()
     {
         return $this->idsubmenu;
+    }
+
+    /**
+     * Set link
+     *
+     * @param string $link
+     * @return Menu
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * Get link
+     *
+     * @return string 
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * Set options
+     *
+     * @param string $options
+     * @return Menu
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Get options
+     *
+     * @return string 
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Get arrrays
+     *
+     * @return array 
+     */
+    public function toArray()
+    {
+        return get_class_vars(get_class($this));
     }
 }
