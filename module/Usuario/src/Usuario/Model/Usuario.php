@@ -27,10 +27,12 @@ class Usuario
 
     public function populate(array $list)
     {
+        //@todo adicionar validação
+
         $this->getEntity()->populate($list);
     }
 
-    public function setDoctrine(Doctrine\ORM\EntityManege $doctrine)
+    public function setDoctrine(\Doctrine\ORM\EntityManager $doctrine)
     {
         $this->doctrine = $doctrine;
     }
@@ -38,6 +40,11 @@ class Usuario
     public function getDoctrine()
     {
         return $this->doctrine;
+    }
+
+    public function getRepositoryUsuario()
+    {
+        return $this->getDoctrine()->getRepository(self::$entityName);
     }
 
 
@@ -77,14 +84,34 @@ class Usuario
         $this->isValid = true;
     }
 
-    public function lista(array $pesquisa = array())
+    public function lista(array $pesquisa = array(), $order = array(), $limit = 10, $offSet = 0)
     {
         if (!empty($pesquisa)) {
             $this->populate($pesquisa);
         }
 
-        $repository = $this->getDoctrine()->getRepository(self::$entityName);
-        $lista = $repository->findBy($this->getEntity()->toArray());
+        $where = array_filter($this->getEntity()->toArray());
+
+        $repository = $this->getRepositoryUsuario();
+        $lista = $repository->findBy($where, $order, $limit, $offSet);
+
+        return $lista;
+    }
+
+    public function buscarUsuario($idUsuario)
+    {
+        $busca = $this->lista(
+            array(
+                  'idUsuario' => $idUsuario
+                )
+        );
+        
+        return end($busca);
+    }
+
+    public function todosUsuarios()
+    {
+        $lista = $this->lista();
 
         return $lista;
     }

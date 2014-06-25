@@ -246,4 +246,20 @@ class Usuario
     {
         return $this->idgrupo;
     }
+
+    public function toArray()
+    {
+        $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods(false);
+        return $hydrator->extract($this);
+    }
+
+    public function populate(array $list)
+    {
+        foreach ($list as $method => $item) {
+            $setMethod = "set" . ucfirst($method);
+            if (method_exists($this, $setMethod)) {
+                $this->{$setMethod}($item);
+            }
+        }
+    }
 }

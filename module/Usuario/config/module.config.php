@@ -19,6 +19,20 @@ return array(
                         'action'     => 'index',
                     ),
                 ),
+            ),
+
+            'usuario_api' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/Api/Usuario[/][/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'usuario_api',
+                        // 'action'     => 'index',
+                    ),
+                ),
             )
         ),
     ),
@@ -42,6 +56,9 @@ return array(
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+                'ViewJsonStrategy',
         ),
     ),
     'doctrine' => array(
