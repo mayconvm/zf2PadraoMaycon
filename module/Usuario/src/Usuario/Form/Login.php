@@ -6,14 +6,14 @@ use Zend\Captcha;
 use Zend\Form\Element;
 use Zend\Form\Form;
 
-class Login extends Form
+class Login extends \Application\Form\FormPadrao
 {
     public function __construct($name = null)
     {
-        parent::__construct('');
+        parent::__construct();
         
         $this->setAttribute('method', 'post');
-        
+
         $this->add(array(
             'name' => 'login',
             'type' => 'Zend\Form\Element\Text',
@@ -36,9 +36,5 @@ class Login extends Form
             ),
         ));
  
-        $this->add(array(
-            'name' => 'csrf',
-            'type' => 'Zend\Form\Element\Csrf',
-        ));
     }
 }
