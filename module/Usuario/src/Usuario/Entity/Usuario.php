@@ -219,10 +219,10 @@ class Usuario
      *
      * @return string 
      */
-    public function getSenha()
-    {
-        return $this->senha;
-    }
+    // public function getSenha()
+    // {
+    //     return $this->senha;
+    // }
 
     /**
      * Set idgrupo
