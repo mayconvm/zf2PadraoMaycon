@@ -8,8 +8,13 @@ use Zend\View\Model\ViewModel;
 class LoginController extends AbstractActionController
 {
 
+    /**
+     * @todo login para pedido de token
+     * @todo deve abrir a tela em popup ou tela comum o padrão deve ser tela comum
+    */
     public function indexAction()
     {
+        // @todo j
         return new ViewModel();
     }
 

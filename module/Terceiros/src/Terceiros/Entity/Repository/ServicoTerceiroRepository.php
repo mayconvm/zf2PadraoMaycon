@@ -15,4 +15,13 @@ class ServicoTerceiroRepository extends EntityRepository
             $limit
         );
     }
+
+    public function findOne($idTerceiros)
+    {
+        return $this->findOneBy(
+            array(
+                'idservicoTerceiro' => $idTerceiros
+                )
+        );
+    }
 }

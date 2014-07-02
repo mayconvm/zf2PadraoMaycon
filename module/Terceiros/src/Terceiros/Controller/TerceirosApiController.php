@@ -10,27 +10,42 @@ use Application\Controller\ApiController;
 class TerceirosApiController extends ApiController
 {
 
+    public function getModel()
+    {
+        return $this->getServiceLocator()->get("Model\ServicoTerceiros");
+    }
+
     public function get($id)
     {
-        
-        return new JsonModel();
+        $result = $this->getModel()->findTerceiros($id);
+
+        return new JsonModel($result);
     }
 
     public function getList()
     {
-        $model = $this->getServiceLocator()->get("Model\ServicoTerceiros");
-        $result = $model->listAll();
+        $result = $this->getModel()->listAll();
 
         return new JsonModel($result);
     }
 
     public function create($data)
     {
-        if ($data != null) {
-            $model = $this->getServiceLocator()->get("Model\ServicoTerceiros");
+        $result = array(
+                'status' => false,
+                'menssage' => 'Os dados enviados não são validos.',
+                'data' => ''
+            );
 
-            $result = $model->save($data);
+        if (isset($data['dados']) and $data['dados'] != null) {
+            $dataArray = \Zend\Json\Decoder::decode($data['dados'], \Zend\Json\Json::TYPE_ARRAY);
+
+            // Adiciona idusuario
+            $dataArray['idusuario'] = '1';
+            $result = $this->getModel()->save($dataArray);
         }
+
+        // return $this->response;
 
         return new JsonModel($result);
     }

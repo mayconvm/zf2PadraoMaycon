@@ -12,6 +12,15 @@ class UsuarioRepository extends EntityRepository
         return $this->findOneBy($dados);
     }
 
+    public function buscarId($idUsuario)
+    {
+        return $this->buscarUsuario(
+            array(
+                'idusuario' => $idUsuario
+                )
+        );
+    }
+
     public function buscarUsuarios(array $dados)
     {
         return $this->findBy($dados);

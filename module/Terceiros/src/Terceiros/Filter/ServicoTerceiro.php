@@ -2,41 +2,56 @@
 
 namespace Terceiros\Filter;
 
-use Zend\Filter;
-use Zend\Validator;
+use Zend\Filter\FilterInterface;
+use Zend\Validator\EmailAddress;
+use Zend\Validator\Ip;
 
 class ServicoTerceiro implements FilterInterface
 {
 
-    public function __construct(arry $arr = null)
+    private $arrValidator;
+
+    public function __construct(array $arr = null)
     {
-        $this->arrValidator = $arr;
+        $this->setArryValidador($arr);
     }
 
     public function setArryValidador(array $arr)
     {
-        $this->arrValidator;
+        $this->arrValidator = $arr;
     }
 
     public function filter($valor)
     {
         $error = array();
 
-        $validatorEmail = new EmaillAddress();
         // @todo valida se todos os dados obrigatorio estão presenter
-        if (!in_array($valor, $this->arrValidator)) {
-            $error[] = "Os dados enviados são incompletos para efetuar o cadastro.";
+        if (!isset($valor['titulo'])) {
+            $error[] = "O campo titulo é obrigatório.";
+        }
+
+        if (!isset($valor['ip'])) {
+            $error[] = "O campo ip é obrigatório.";
+        }
+
+        if (!isset($valor['emailContato'])) {
+            $error[] = "O campo emailContato é obrigatório.";
+        }
+
+        if (!isset($valor['idusuario'])) {
+            $error[] = "O campo idusuario é obrigatório.";
         }
 
         // @todo valida e-mail
-        if (!$validatorEmail->isValid($valor['email_contato'])) {
-            $error[] = $validatorEmail->getMenssage();
+        $validatorEmail = new EmailAddress();
+        if (empty($error) and !$validatorEmail->isValid($valor['emailContato'])) {
+            $error[] = $validatorEmail->getMessages();
         }
 
         // @todo valida ip
         $validatorIp = new Ip();
-        if (!$validatorIp->isValid($valor['ip'])) {
-            $error[] = $validatorIp->getMenssage();
+        if (empty($error) and !$validatorIp->isValid($valor['ip'])) {
+            $error[] = $validatorIp->getMessages();
         }
 
         return $error;

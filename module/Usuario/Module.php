@@ -18,6 +18,7 @@ class Module
             'dispatch',
             function ($e) {
                 $result = $e->getResult();
+                // var_dump($result);
                 if ($result instanceof \Zend\View\Model\ViewModel) {
                     // $result->setTerminal($e->getRequest()->isXmlHttpRequest());
 
