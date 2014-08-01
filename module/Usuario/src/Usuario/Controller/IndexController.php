@@ -40,14 +40,40 @@ class IndexController extends AbstractActionController
 
         return new ViewModel(
             array(
-                'form' => $form
+                'formulario' => $form
             )
         );
     }
 
     public function editarAction()
     {
-        return new ViewModel();
+        $form = new UsuarioForm();
+        $request = $this->getRequest();
+
+        $id = $this->params("id");
+
+        // gravando
+        if ($request->isPost()) {
+            $data = $request->getPost();
+            $validate = new UsuarioValidate();
+
+            if ($validate->isValid()) {
+                $usuario = $this->getServiceLocator()->get("Usuario\Model");
+                $usuario->editaUsuario($data, $id);
+
+                $this->flashMessenger()->addMessage($usuario->getMensage());
+
+                if ($usuario->isValid()) {
+                    $this->redirect()->toRouter('usuario_lista');
+                }
+            }
+        }
+
+        return new ViewModel(
+            array(
+                'formulario' => $form
+            )
+        );
     }
 
     public function excluirAction()

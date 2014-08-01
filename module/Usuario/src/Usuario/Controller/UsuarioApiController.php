@@ -61,7 +61,25 @@ class UsuarioApiController extends \Application\Controller\ApiController
 
     public function update($id, $dados)
     {
+        $model = $this->getServicelocator()->get("Usuario\Model");
+        $return = array(
+            'status' => false,
+            'msg' => "Os dados enviados não são válidos.",
+            'data' => array()
+            );
 
+        if (is_array($dados)) {
+            $entityUsuario = $model->editaUsuario($dados, $id);
+
+            if (is_numeric($result)) {
+                $return['status'] = true;
+                $return['msg'] = $model->getMensage();
+                $return['data'] = $entityUsuario->toArray();
+            }
+        } else {
+            $return['msg'] = "Os dados enviado não são válidos.";
+        }
+        return new JsonModel($return);
     }
 
     public function delete($id)
