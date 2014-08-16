@@ -1,3 +1,36 @@
-Module: Usuario
-Controller: index
-Action: lista
+<div ng-controller="usuarioList" id="usuarioList">
+	
+	<h1>{{titulo}}</h1>
+	<a href="<?php echo $this->url('usuario_index', array('action' => 'Novo'))?>" class="btn btn-primary pull-right">Novo usuário</a>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					<input type="checkbox" id="">
+				</th>
+				<th>Nome</th>
+				<th>E-mail</th>
+				<th>Usuário</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in lista">
+				<td>
+					<input type="checkbox" id="" name="">
+				</td>
+				<td>{{item.nome}}</td>
+				<td>{{item.email}}</td>
+				<td>{{item.usuario}}</td>
+				<td>
+					<button ng-click="$redirect.get('<?php echo $this->url('usuario_index', array('action' => 'Editar')) ?>/{{item.idUsuario}}');" type="button" class="btn btn-primary">Editar</button>
+
+					<button ng-click="$redirect('<?php echo $this->url('usuario_index', array('action' => 'Suspender')) ?>', 'PUT')" type="button" class="btn btn-success">Suspender</button>
+
+					<button ng-click="$redirect('<?php echo $this->url('usuario_api', array('action' => 'Excluir')) ?>', 'PUT')" type="button" class="btn btn-danger">Excluir</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+

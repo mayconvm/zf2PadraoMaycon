@@ -1,3 +1,24 @@
-Module: Usuario
-Controller: index
-Action: editar
+<div ng-controller="usuarioEditar" id="usuarioEditar">
+	
+	<h1>{{titulo}}</h1>
+
+	<div>
+		<?php
+			$form = $this->formulario;
+			$form->setAttribute('action', $this->url('usuario_api'));
+			$form->setAttribute('method', 'POST');
+			// $form->setAttribute('ng-submit', '$apiRest.post("' + $this->url('usuario_api') + '", validaForm)');
+
+			echo $this->form()->openTag($form);
+
+			echo $this->formRow($form->get("nome"));
+			echo $this->formRow($form->get("email"));
+			echo $this->formRow($form->get("senha"));
+			echo $this->formRow($form->get("re-senha"));
+			echo $this->formRow($form->get("enviar"));
+			echo $this->formRow($form->get("csrf"));
+
+			echo $this->form()->closeTag();
+		?>
+	</div>
+</div>
