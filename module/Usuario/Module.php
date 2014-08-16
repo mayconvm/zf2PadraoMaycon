@@ -52,7 +52,7 @@ class Module
     {
         return array(
             'factories' => array(
-                    'Authentication\Usuario' => function ($sm) {
+                    'Authentication\Usuario_' => function ($sm) {
                         $authentication = new \Zend\Authentication\AuthenticationService();
                         $adapter = new \Usuario\Model\Auth\Adapter($sm->get('Doctrine\ORM\EntityManager'));
                         $storage = new \Usuario\Model\Auth\Storage();

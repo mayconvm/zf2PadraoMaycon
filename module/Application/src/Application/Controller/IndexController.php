@@ -46,12 +46,12 @@ class IndexController extends BaseController
             //Realiza a autenticação
             $authentication->getAdapter()->setCredential($credential);
             $authentication->getAdapter()->setIdentity($identity);
-            $authentication->authenticate();
         }
 
-        if ($authentication->hasIdentity()) {
+        if ($authentication->authenticate()->isValid()) {
             $this->redirect()->toRoute('usuario_index');
         } else {
+            print_r($this->authentication()->getMenssages());
             $this->flashmessenger()->addMessage("Este usuário não está habilitado para logar no sistema.");
         }
 

@@ -42,6 +42,9 @@ return array(
             'usuario_api' => 'Usuario\Controller\UsuarioApiController'
         ),
     ),
+    'service_manager' => array(
+        'Authentication\Usuario' => 'Usuario\Model\Auth\Factory\AuthenticationFactory'
+    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
