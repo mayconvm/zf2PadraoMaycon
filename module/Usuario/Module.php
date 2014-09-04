@@ -23,7 +23,7 @@ class Module
                     // $result->setTerminal($e->getRequest()->isXmlHttpRequest());
 
                     // Valida se o usuário está logado
-                    $this->userLogado($e);
+                    // $this->userLogado($e);
                 }
 
             }
@@ -52,7 +52,7 @@ class Module
     {
         return array(
             'factories' => array(
-                    'Authentication\Usuario_' => function ($sm) {
+                    'Authentication\Usuario_*****' => function ($sm) {
                         $authentication = new \Zend\Authentication\AuthenticationService();
                         $adapter = new \Usuario\Model\Auth\Adapter($sm->get('Doctrine\ORM\EntityManager'));
                         $storage = new \Usuario\Model\Auth\Storage();
@@ -73,7 +73,7 @@ class Module
                     'Usuario\Acl' => function ($sm) {
                         $acl = new \Usuario\Model\Auth\AclUsuario();
                         $acl->setDoctrine($sm->get("Doctrine\ORM\EntityManager"));
-                        $acl->setUsuario($sm->get("Usuario\Entity"));
+                        // $acl->setUsuario($sm->get("Usuario\Entity"));
                         $acl->execAcl();
 
                         return $acl;

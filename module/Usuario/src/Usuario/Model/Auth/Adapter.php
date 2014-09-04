@@ -8,8 +8,20 @@ use Zend\Authentication\Result;
 
 class Adapter implements AdapterInterface
 {
-    
+    /**
+     * @var Doctrine\ORM\EntityManager
+     */
     private $doctrine;
+
+    /**
+     * @var String
+     */
+    private $identity;
+
+    /**
+     * @var string
+     */
+    private $credential;
 
     public function __construct(\Doctrine\ORM\EntityManager $doctrine)
     {
@@ -26,6 +38,8 @@ class Adapter implements AdapterInterface
 
         $credential = $this->getCredential();
         $identity = $this->getIdentity();
+
+        echo $identity;
 
         $valid = $entity->findOneBy(array(
             'usuario' => $identity,
@@ -57,8 +71,8 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * Método para buscar qual é o usuário que está logando
-     * @return string usuário que está sendo logado
+     * Método para buscar qual é senha
+     * @return string senha que está sendo usada
      */
     public function getCredential()
     {
@@ -66,17 +80,17 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * Método que altera o usuário
-     * @param string $credential Usuário a ser testado
+     * Método que altera a senha
+     * @param string $credential Senha a ser testado
      */
     public function setCredential($credential)
     {
-        $this->credential = $credential;
+        $this->credential = md5($credential);
     }
 
     /**
-     * Método para bucar qual é a senha do usuário em MD5
-     * @return string  Senha do usuário em MD5 
+     * Método para bucar qual é o usuário
+     * @return string  Usuário 
      */
     public function getIdentity()
     {
@@ -84,8 +98,8 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * Método para altera a senha do usuário
-     * @param string $identity senha do usuário
+     * Método para altera é o úsuário
+     * @param string $identity usuário
      */
     public function setIdentity($identity)
     {
