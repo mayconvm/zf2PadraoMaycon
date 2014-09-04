@@ -37,8 +37,8 @@ class IndexController extends BaseController
 
             // Captura dados de login
             $dados = $request->getPost();
-            $credential = $dados['login'];
-            $identity = $dados['senha'];
+            $identity = $dados['login'];
+            $credential = $dados['senha'];
 
             
             //validando o formulário
