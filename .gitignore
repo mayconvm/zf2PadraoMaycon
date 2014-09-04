@@ -17,3 +17,7 @@ public/js/bower_components/*
 node_modules/
 node_modules/*
 Documentação/*
+*.sublime-*
+*.old
+*/*.old
+config/application.config.old
