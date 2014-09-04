@@ -15,7 +15,8 @@ return array(
         'Grupo',
         'ACL',
         'Token',
-        'Terceiros'
+        'Terceiros',
+        'CrudEntity'
         ),
     'module_listener_options' => array(
         'module_paths' => array(
